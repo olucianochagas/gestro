@@ -18,4 +18,8 @@ describe('Email', () => {
   it('rejeita string vazia', () => {
     expect(Email.create('').ok).toBe(false)
   })
+
+  it('rejeita domínio que começa com ponto', () => {
+    expect(Email.create('user@.example.com').ok).toBe(false)
+  })
 })

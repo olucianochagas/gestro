@@ -3,7 +3,7 @@ import { type Result, ok, err } from '@/core/shared/domain/result'
 import { InvalidEmailError } from '../errors/invalid-email.error'
 
 export class Email extends ValueObject<{ value: string }> {
-  private static readonly PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  private static readonly PATTERN = /^[^\s@]+@[^\s@.][^\s@]*\.[^\s@]+$/
 
   private constructor(value: string) {
     super({ value })

@@ -28,7 +28,7 @@ export class Organization extends Entity<string> {
     return this.props.ownerId
   }
   get createdAt(): Date {
-    return this.props.createdAt
+    return new Date(this.props.createdAt)
   }
 
   static create(
