@@ -7,6 +7,7 @@ export abstract class Entity<TId> {
 
   equals(other?: Entity<TId>): boolean {
     if (!other) return false
+    if (other.constructor !== this.constructor) return false
     return this.id === other.id
   }
 }

@@ -2,7 +2,7 @@ import type { Clock } from '@/core/shared/application/clock'
 import type { IdGenerator } from '@/core/shared/application/id-generator'
 
 export class FixedClock implements Clock {
-  constructor(private readonly fixed: Date = new Date('2026-06-01T12:00:00.000Z')) {}
+  constructor(private readonly fixed: Date = new Date('2000-01-01T00:00:00.000Z')) {}
   now(): Date {
     return this.fixed
   }
