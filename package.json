@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "e2e": "start-server-and-test dev http://localhost:3000 \"cypress run --e2e\"",
+    "e2e:open": "start-server-and-test dev http://localhost:3000 \"cypress open --e2e\""
   },
   "dependencies": {
     "@node-rs/argon2": "^2.0.2",
