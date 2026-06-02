@@ -1,3 +1,4 @@
+import 'server-only'
 import { env } from '@/infrastructure/config/env'
 import { InMemoryUserRepository } from '@/infrastructure/persistence/in-memory/in-memory-user.repository'
 import { InMemoryOrganizationRepository } from '@/infrastructure/persistence/in-memory/in-memory-organization.repository'

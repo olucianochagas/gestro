@@ -31,6 +31,9 @@ export class AuthenticateUser
     const valid = await this.hasher.verify(input.password, user.passwordHash)
     if (!valid) return err(new InvalidCredentialsError())
 
+    // Invariante do esqueleto: 1 organização (pessoal) por usuário, criada no RegisterUser.
+    // Ao introduzir multi-org/convites, esta seleção precisará de um critério explícito
+    // (ex.: org ativa selecionada pelo usuário) em vez de simplesmente memberships[0].
     const memberships = await this.memberships.findByUser(user.id)
     const membership = memberships[0]
     if (!membership) return err(new InvalidCredentialsError())
