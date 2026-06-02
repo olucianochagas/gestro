@@ -2149,7 +2149,7 @@ import type { ProjectRepository } from './project-repository'
 import { Project } from '../entities/project'
 import { ProjectName } from '../value-objects/project-name'
 import { ProjectKey } from '../value-objects/project-key'
-import { FixedClock, SequentialIdGenerator } from '@/test-support/fakes'
+import { FixedClock } from '@/test-support/fakes'
 
 function buildProject(organizationId: string, key: string): Project {
   const name = ProjectName.create(`Projeto ${key}`)
@@ -2157,7 +2157,8 @@ function buildProject(organizationId: string, key: string): Project {
   if (!name.ok || !projectKey.ok) throw new Error('fixture inválida')
   return Project.create(
     { organizationId, key: projectKey.value, name: name.value, description: '', createdBy: 'u' },
-    { idGenerator: new SequentialIdGenerator('p'), clock: new FixedClock() },
+    // id determinístico e único por (org, key) — evita colisão de identidade no Map por id.
+    { idGenerator: { generate: () => `${organizationId}:${key}` }, clock: new FixedClock() },
   )
 }
 
