@@ -1,7 +1,7 @@
 # Adaptador de Persistência PostgreSQL — Design
 
 - **Data:** 2026-06-02
-- **Status:** Aprovado (aguardando revisão da spec escrita)
+- **Status:** Implementado
 - **Incremento:** substituir os repositórios in-memory por implementações PostgreSQL, validadas por contract tests, sem alterar o núcleo.
 - **Branch:** `feat/persistencia-postgres`
 - **Spec anterior:** [walking skeleton Identidade + Projetos](2026-06-01-identidade-projetos-walking-skeleton-design.md)
