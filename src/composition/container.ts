@@ -39,6 +39,14 @@ export interface Container {
 }
 
 function build(): Container {
+  // Defensivo: produção nunca deve cair silenciosamente em persistência in-memory.
+  // Exclui a fase de build do Next (NEXT_PHASE), que prerenderiza páginas com
+  // NODE_ENV=production mas legitimamente sem DATABASE_URL; o guard vale ao servir.
+  const isNextBuild = process.env.NEXT_PHASE === 'phase-production-build'
+  if (process.env.NODE_ENV === 'production' && !isNextBuild && !env.DATABASE_URL) {
+    throw new Error('DATABASE_URL é obrigatória em produção.')
+  }
+
   const secret = new TextEncoder().encode(env.SESSION_SECRET)
   const base = {
     hasher: new Argon2PasswordHasher(),
