@@ -5,7 +5,6 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
     alias: {
-      // Evita que `import 'server-only'` quebre os testes ao importar adaptadores de servidor.
       "server-only": fileURLToPath(
         new URL("./src/test-support/server-only.ts", import.meta.url),
       ),
@@ -14,8 +13,11 @@ export default defineConfig({
   test: {
     environment: "node",
     globals: true,
-    include: ["src/**/*.test.ts"],
-    exclude: ["**/node_modules/**", "**/*.pg.test.ts"],
-    setupFiles: ["./src/test-support/setup-env.ts"],
+    include: ["src/**/*.pg.test.ts"],
+    globalSetup: ["./src/test-support/pg-global-setup.ts"],
+    // Banco único compartilhado entre arquivos → execução serial evita corridas de TRUNCATE.
+    fileParallelism: false,
+    testTimeout: 30000,
+    hookTimeout: 120000,
   },
 });
