@@ -20,4 +20,10 @@ export class ProjectKey extends ValueObject<{ value: string }> {
     }
     return ok(new ProjectKey(normalized))
   }
+
+  static fromTrusted(value: string): ProjectKey {
+    const result = ProjectKey.create(value)
+    if (!result.ok) throw new Error(`ProjectKey persistido inválido: ${value}`)
+    return result.value
+  }
 }

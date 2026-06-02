@@ -18,4 +18,10 @@ export class ProjectName extends ValueObject<{ value: string }> {
     }
     return ok(new ProjectName(trimmed))
   }
+
+  static fromTrusted(value: string): ProjectName {
+    const result = ProjectName.create(value)
+    if (!result.ok) throw new Error('ProjectName persistido inválido')
+    return result.value
+  }
 }
