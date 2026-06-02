@@ -9,6 +9,13 @@ import { Argon2PasswordHasher } from '@/infrastructure/security/argon2-password-
 import { JoseSessionService } from '@/infrastructure/security/jose-session-service'
 import { SystemClock } from '@/infrastructure/system/system-clock'
 import { CryptoIdGenerator } from '@/infrastructure/system/crypto-id-generator'
+import { Pool } from 'pg'
+import { PgDatabase } from '@/infrastructure/persistence/postgres/pg-database'
+import { PgTransactionRunner } from '@/infrastructure/persistence/postgres/pg-transaction-runner'
+import { PgUserRepository } from '@/infrastructure/persistence/postgres/pg-user.repository'
+import { PgOrganizationRepository } from '@/infrastructure/persistence/postgres/pg-organization.repository'
+import { PgMembershipRepository } from '@/infrastructure/persistence/postgres/pg-membership.repository'
+import { PgProjectRepository } from '@/infrastructure/persistence/postgres/pg-project.repository'
 import type { UserRepository } from '@/core/identity/domain/ports/user-repository'
 import type { OrganizationRepository } from '@/core/identity/domain/ports/organization-repository'
 import type { MembershipRepository } from '@/core/identity/domain/ports/membership-repository'
@@ -33,15 +40,31 @@ export interface Container {
 
 function build(): Container {
   const secret = new TextEncoder().encode(env.SESSION_SECRET)
-  return {
-    users: new InMemoryUserRepository(),
-    organizations: new InMemoryOrganizationRepository(),
-    memberships: new InMemoryMembershipRepository(),
-    projects: new InMemoryProjectRepository(),
+  const base = {
     hasher: new Argon2PasswordHasher(),
     sessionService: new JoseSessionService(secret),
     clock: new SystemClock(),
     idGenerator: new CryptoIdGenerator(),
+  }
+
+  if (env.DATABASE_URL) {
+    const db = new PgDatabase(new Pool({ connectionString: env.DATABASE_URL }))
+    return {
+      ...base,
+      users: new PgUserRepository(db),
+      organizations: new PgOrganizationRepository(db),
+      memberships: new PgMembershipRepository(db),
+      projects: new PgProjectRepository(db),
+      transactionRunner: new PgTransactionRunner(db),
+    }
+  }
+
+  return {
+    ...base,
+    users: new InMemoryUserRepository(),
+    organizations: new InMemoryOrganizationRepository(),
+    memberships: new InMemoryMembershipRepository(),
+    projects: new InMemoryProjectRepository(),
     transactionRunner: new InMemoryTransactionRunner(),
   }
 }
