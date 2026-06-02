@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { CreateProject } from './create-project'
 import { InMemoryProjectRepository } from '@/infrastructure/persistence/in-memory/in-memory-project.repository'
 import { FixedClock, SequentialIdGenerator } from '@/test-support/fakes'

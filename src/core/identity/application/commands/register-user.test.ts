@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { RegisterUser } from './register-user'
 import { InMemoryUserRepository } from '@/infrastructure/persistence/in-memory/in-memory-user.repository'
 import { InMemoryOrganizationRepository } from '@/infrastructure/persistence/in-memory/in-memory-organization.repository'
