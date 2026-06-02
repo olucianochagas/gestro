@@ -8,7 +8,7 @@ import { GetProject } from '@/core/projects/application/queries/get-project'
 
 export function makeRegisterUser(): RegisterUser {
   const c = getContainer()
-  return new RegisterUser(c.users, c.organizations, c.memberships, c.hasher, c.idGenerator, c.clock)
+  return new RegisterUser(c.users, c.organizations, c.memberships, c.hasher, c.idGenerator, c.clock, c.transactionRunner)
 }
 
 export function makeAuthenticateUser(): AuthenticateUser {

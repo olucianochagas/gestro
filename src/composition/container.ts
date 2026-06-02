@@ -4,6 +4,7 @@ import { InMemoryUserRepository } from '@/infrastructure/persistence/in-memory/i
 import { InMemoryOrganizationRepository } from '@/infrastructure/persistence/in-memory/in-memory-organization.repository'
 import { InMemoryMembershipRepository } from '@/infrastructure/persistence/in-memory/in-memory-membership.repository'
 import { InMemoryProjectRepository } from '@/infrastructure/persistence/in-memory/in-memory-project.repository'
+import { InMemoryTransactionRunner } from '@/infrastructure/persistence/in-memory/in-memory-transaction-runner'
 import { Argon2PasswordHasher } from '@/infrastructure/security/argon2-password-hasher'
 import { JoseSessionService } from '@/infrastructure/security/jose-session-service'
 import { SystemClock } from '@/infrastructure/system/system-clock'
@@ -16,6 +17,7 @@ import type { PasswordHasher } from '@/core/identity/domain/ports/password-hashe
 import type { SessionService } from '@/core/identity/domain/ports/session-service'
 import type { Clock } from '@/core/shared/application/clock'
 import type { IdGenerator } from '@/core/shared/application/id-generator'
+import type { TransactionRunner } from '@/core/shared/application/transaction-runner'
 
 export interface Container {
   users: UserRepository
@@ -26,6 +28,7 @@ export interface Container {
   sessionService: SessionService
   clock: Clock
   idGenerator: IdGenerator
+  transactionRunner: TransactionRunner
 }
 
 function build(): Container {
@@ -39,6 +42,7 @@ function build(): Container {
     sessionService: new JoseSessionService(secret),
     clock: new SystemClock(),
     idGenerator: new CryptoIdGenerator(),
+    transactionRunner: new InMemoryTransactionRunner(),
   }
 }
 

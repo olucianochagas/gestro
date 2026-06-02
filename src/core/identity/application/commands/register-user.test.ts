@@ -4,6 +4,7 @@ import { InMemoryUserRepository } from '@/infrastructure/persistence/in-memory/i
 import { InMemoryOrganizationRepository } from '@/infrastructure/persistence/in-memory/in-memory-organization.repository'
 import { InMemoryMembershipRepository } from '@/infrastructure/persistence/in-memory/in-memory-membership.repository'
 import { FixedClock, SequentialIdGenerator } from '@/test-support/fakes'
+import { InMemoryTransactionRunner } from '@/infrastructure/persistence/in-memory/in-memory-transaction-runner'
 import { EmailAlreadyInUseError } from '../../domain/errors/email-already-in-use.error'
 import { InvalidEmailError } from '../../domain/errors/invalid-email.error'
 import { Email } from '../../domain/value-objects/email'
@@ -28,6 +29,7 @@ function makeSut() {
     new StubHasher(),
     new SequentialIdGenerator(),
     new FixedClock(),
+    new InMemoryTransactionRunner(),
   )
   return { sut, users, memberships }
 }
