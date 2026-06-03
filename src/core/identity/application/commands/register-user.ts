@@ -1,6 +1,7 @@
 import type { UseCase } from '@/core/shared/application/use-case'
 import type { Clock } from '@/core/shared/application/clock'
 import type { IdGenerator } from '@/core/shared/application/id-generator'
+import type { TransactionRunner } from '@/core/shared/application/transaction-runner'
 import { type Result, ok, err } from '@/core/shared/domain/result'
 import { Email } from '../../domain/value-objects/email'
 import { OrganizationSlug } from '../../domain/value-objects/organization-slug'
@@ -32,6 +33,7 @@ export class RegisterUser implements UseCase<RegisterUserInput, Result<UserDTO, 
     private readonly hasher: PasswordHasher,
     private readonly idGenerator: IdGenerator,
     private readonly clock: Clock,
+    private readonly tx: TransactionRunner,
   ) {}
 
   async execute(input: RegisterUserInput): Promise<Result<UserDTO, RegisterUserError>> {
@@ -60,10 +62,11 @@ export class RegisterUser implements UseCase<RegisterUserInput, Result<UserDTO, 
       role: Role.OWNER,
     })
 
-    await this.users.save(user)
-    await this.organizations.save(organization)
-    await this.memberships.save(membership)
-
-    return ok(toUserDTO(user))
+    return this.tx.run(async () => {
+      await this.users.save(user)
+      await this.organizations.save(organization)
+      await this.memberships.save(membership)
+      return ok(toUserDTO(user))
+    })
   }
 }

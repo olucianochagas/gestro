@@ -5,7 +5,11 @@ export class InMemoryMembershipRepository implements MembershipRepository {
   private readonly all: Membership[] = []
 
   async save(membership: Membership): Promise<void> {
-    this.all.push(membership)
+    const index = this.all.findIndex(
+      (m) => m.userId === membership.userId && m.organizationId === membership.organizationId,
+    )
+    if (index >= 0) this.all[index] = membership
+    else this.all.push(membership)
   }
 
   async findByUser(userId: string): Promise<Membership[]> {

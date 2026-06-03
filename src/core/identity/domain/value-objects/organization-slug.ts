@@ -18,4 +18,8 @@ export class OrganizationSlug extends ValueObject<{ value: string }> {
       .replace(/^-+|-+$/g, '')
     return new OrganizationSlug(slug.length > 0 ? slug : 'org')
   }
+
+  static fromTrusted(value: string): OrganizationSlug {
+    return new OrganizationSlug(value)
+  }
 }

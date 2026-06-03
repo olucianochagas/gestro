@@ -10,12 +10,15 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "e2e": "start-server-and-test dev http://localhost:3000 \"cypress run --e2e\"",
-    "e2e:open": "start-server-and-test dev http://localhost:3000 \"cypress open --e2e\""
+    "e2e:open": "start-server-and-test dev http://localhost:3000 \"cypress open --e2e\"",
+    "db:migrate": "tsx src/infrastructure/persistence/postgres/migrate.ts",
+    "test:db": "vitest run --config vitest.db.config.mts"
   },
   "dependencies": {
     "@node-rs/argon2": "^2.0.2",
     "jose": "^6.2.3",
     "next": "16.2.6",
+    "pg": "^8.21.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "server-only": "^0.0.1",
@@ -23,7 +26,9 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@testcontainers/postgresql": "^12.0.1",
     "@types/node": "^20",
+    "@types/pg": "^8.20.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
@@ -32,6 +37,8 @@
     "eslint-config-next": "16.2.6",
     "start-server-and-test": "^3.0.5",
     "tailwindcss": "^4",
+    "testcontainers": "^12.0.1",
+    "tsx": "^4.22.4",
     "typescript": "^5",
     "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.1.8"

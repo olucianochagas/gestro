@@ -5,6 +5,7 @@ import { InMemoryUserRepository } from '@/infrastructure/persistence/in-memory/i
 import { InMemoryOrganizationRepository } from '@/infrastructure/persistence/in-memory/in-memory-organization.repository'
 import { InMemoryMembershipRepository } from '@/infrastructure/persistence/in-memory/in-memory-membership.repository'
 import { FixedClock, SequentialIdGenerator } from '@/test-support/fakes'
+import { InMemoryTransactionRunner } from '@/infrastructure/persistence/in-memory/in-memory-transaction-runner'
 
 class StubHasher {
   async hash(plain: string): Promise<string> {
@@ -25,6 +26,7 @@ describe('GetCurrentUser', () => {
       new StubHasher(),
       new SequentialIdGenerator(),
       new FixedClock(),
+      new InMemoryTransactionRunner(),
     )
     await register.execute({ name: 'Ana', email: 'ana@example.com', password: 'Str0ng!Pass' })
 

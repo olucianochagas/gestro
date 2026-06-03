@@ -5,6 +5,7 @@ import { InMemoryUserRepository } from '@/infrastructure/persistence/in-memory/i
 import { InMemoryOrganizationRepository } from '@/infrastructure/persistence/in-memory/in-memory-organization.repository'
 import { InMemoryMembershipRepository } from '@/infrastructure/persistence/in-memory/in-memory-membership.repository'
 import { FixedClock, SequentialIdGenerator } from '@/test-support/fakes'
+import { InMemoryTransactionRunner } from '@/infrastructure/persistence/in-memory/in-memory-transaction-runner'
 import { InvalidCredentialsError } from '../../domain/errors/invalid-credentials.error'
 
 class StubHasher {
@@ -21,7 +22,7 @@ async function makeSut() {
   const orgs = new InMemoryOrganizationRepository()
   const memberships = new InMemoryMembershipRepository()
   const hasher = new StubHasher()
-  const register = new RegisterUser(users, orgs, memberships, hasher, new SequentialIdGenerator(), new FixedClock())
+  const register = new RegisterUser(users, orgs, memberships, hasher, new SequentialIdGenerator(), new FixedClock(), new InMemoryTransactionRunner())
   await register.execute({ name: 'Ana', email: 'ana@example.com', password: 'Str0ng!Pass' })
   const sut = new AuthenticateUser(users, memberships, hasher)
   return { sut }

@@ -7,4 +7,8 @@ export class InMemoryOrganizationRepository implements OrganizationRepository {
   async save(organization: Organization): Promise<void> {
     this.byId.set(organization.id, organization)
   }
+
+  async findById(id: string): Promise<Organization | null> {
+    return this.byId.get(id) ?? null
+  }
 }

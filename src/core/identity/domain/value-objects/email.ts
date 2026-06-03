@@ -20,4 +20,10 @@ export class Email extends ValueObject<{ value: string }> {
     }
     return ok(new Email(normalized))
   }
+
+  static fromTrusted(value: string): Email {
+    const result = Email.create(value)
+    if (!result.ok) throw new Error('Email persistido inválido')
+    return result.value
+  }
 }
